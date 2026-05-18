@@ -19,6 +19,58 @@
 
     public delegate void ThermometerEventHandler(float temperature);
 
+    // Java equivalent: public interface ThermometerEventHandler { void handleTemperatureChange(float temperature); }'
+    public interface IThermometerEventHandler {
+        void HandleTemperatureChange(float temperature);
+    }
+
+    public class JavaThermometer{
+        List<IThermometerEventHandler> m_ThermometerEventHandlerList;
+
+        public JavaThermometer() {
+            
+        }
+
+        public void SubScribeHandler(IThermometerEventHandler handler) {
+            if (m_ThermometerEventHandlerList == null) {
+                m_ThermometerEventHandlerList = new List<IThermometerEventHandler>();
+            }
+            m_ThermometerEventHandlerList.Add(handler);
+        }
+        
+        // Unsubscribe a handler
+        public void UnsubscribeHandler(IThermometerEventHandler handler) {
+            if (m_ThermometerEventHandlerList != null && m_ThermometerEventHandlerList.Contains(handler)) {
+                m_ThermometerEventHandlerList.Remove(handler);
+            }
+        }
+
+        public void NotifyTemperatureChange(float temperature) {
+            if (m_ThermometerEventHandlerList != null) {
+                foreach (var handler in m_ThermometerEventHandlerList) {
+                    handler.HandleTemperatureChange(temperature);
+                }
+            }
+        }
+
+        public void MeasureTemperature() {
+            // Simulate temperature reading
+            Random rand = new Random();
+            float currentTemperature = (float)(rand.NextDouble() * 40.0); // Temperature between 0 and 40
+            
+            NotifyTemperatureChange(currentTemperature);
+        }
+    }
+
+    // This class would be the observer in Java, implementing the IThermometerEventHandler interface
+    public class JavaMachine : IThermometerEventHandler{
+        public void HandleTemperatureChange(float temperature) {
+            Console.WriteLine($"JavaMachine received temperature update: {temperature}°C");
+            // Add logic to respond to temperature change
+        }
+    }
+
+
     public class Thermometer{
         
         public event ThermometerEventHandler m_ThermometerEventHandler;
