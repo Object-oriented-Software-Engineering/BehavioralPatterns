@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="Command1/Command1.csproj" />
+  <Project Path="Observer/Observer.csproj" />
+  <Project Path="TemplateMethod/TemplateMethod.csproj" />
 </Solution>
